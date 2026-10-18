@@ -1,4 +1,19 @@
-stock = []
+import json
+
+def save_stock():
+    with open("stock.json", "w") as f:
+        json.dump(stock, f)
+
+def load_stock():
+    try:
+        with open("stock.json", "r") as f:
+            data = json.load(f)
+            return data
+    except FileNotFoundError:
+        return []
+
+
+stock = load_stock()
 
 while True:
     print("1. Add Jersey 2. View Stock 3. Remove Jersey 4. Quit")   # Menu for the user
@@ -12,6 +27,7 @@ while True:
         price = float(input("Enter price: "))
         jersey = {"team": team, "season": season, "size": size, "cost": cost, "price": price}   # Uses a dictionary to store each jersey with its data into the stock list
         stock.append(jersey)
+        save_stock()
         
     elif choice == "2":
         if stock == []:
@@ -38,6 +54,7 @@ while True:
             else:
                 if 1<= num <= len(stock):
                     removed = stock.pop(num - 1)
+                    save_stock()
                     print(f"Removed {removed['team']} ")
                 else:
                     print("Invalid number.")
