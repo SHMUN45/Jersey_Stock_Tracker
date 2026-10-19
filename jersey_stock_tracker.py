@@ -13,22 +13,22 @@ def load_stock():
         return []
     
 def add_jersey():
-     team = input("Enter team: ")
-     season = input("Enter season: ")
-     size = input("Enter size: ")
-     cost = float(input("Enter cost: "))
-     price = float(input("Enter price: "))
-     jersey = {"team": team, "season": season, "size": size, "cost": cost, "price": price}   # Uses a dictionary to store each jersey with its data into the stock list
-     stock.append(jersey)
-     save_stock()
+    team = input("Enter team: ")
+    season = input("Enter season: ")
+    size = input("Enter size: ")
+    cost = float(input("Enter purchase cost: "))
+    listed_price = float(input("Enter listed price: "))
+    jersey = {"team": team, "season": season, "size": size, "cost": cost, "listed_price": listed_price, "sold_price": None}   # Uses a dictionary to store each jersey with its data into the stock list
+    stock.append(jersey)
+    save_stock()
 
 def view_stock():
     if stock == []:
-            print("Stock is empty")  # If stock is empty
+        print("Stock is empty")  # If stock is empty
         
     else:
         for j in stock:
-            print(f"{j['team']} | {j['season']} | {j['size']} | {j['cost']:.2f}  | {j['price']:.2f} | Profit: {j['price'] - j['cost']:.2f}") # Uses f string to print out the stock to user, using 2 decimal points for price and cost, and calculates prof
+            print(f"{j['team']} | {j['season']} | {j['size']} | {j['cost']:.2f}  | {j['listed_price']:.2f}") # Uses f string to print out the stock to user, using 2 decimal points for price and cost
     
 def remove_jersey():
     if stock == []:
