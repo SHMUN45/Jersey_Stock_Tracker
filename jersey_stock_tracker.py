@@ -35,7 +35,7 @@ def view_stock():
     
 def remove_jersey():
     if stock == []:
-        print("Cannot proceed as stock is empty.")
+        print("Cannot proceed as stock is empty. ")
         
     else:
         for num, j in enumerate(stock, start=1):
@@ -44,7 +44,7 @@ def remove_jersey():
         try:
             num = int(input("Enter list number: "))
         except ValueError:
-            print("Please enter a number.")
+            print("Please enter a number. ")
             
         else:
             if 1<= num <= len(stock):
@@ -53,12 +53,50 @@ def remove_jersey():
                 print(f"Removed {removed['team']} ")
             else:
                 print("Invalid number.")
-    
 
+def mark_sold():
+    if stock == []:
+        print("Cannot proceed as stock is empty. ")
+    else:
+        for num, j in enumerate(stock, start=1):
+            if j['sold_price'] is None:
+                status = "UNSOLD"
+            else:
+                status = "SOLD"
+            print(f"{num} | {j['team']} | {j['season']} | {j['size']} | {status}")
+            
+        try:
+            num = int(input("Enter list number. "))
+        except ValueError:
+            print("Please enter a number")
+            
+        else:
+            if 1<= num <= len(stock):
+                marked = stock[num-1]
+                if marked['sold_price'] is not None:
+                    print("Already sold")
+                else:
+                    
+                    try:
+                        sold = float(input("Enter sold price: "))
+                    except ValueError:
+                        print("Please enter a valid price.")
+                    else:
+                        marked['sold_price'] = sold
+                        save_stock()
+                        print(f"Marked {marked['team']} {marked['season']} as sold for €{sold:.2f} ")
+                    
+            else:
+                print("Invalid number.")
+            
+                    
+                    
+                
+            
 stock = load_stock()
 
 while True:
-    print("1. Add Jersey 2. View Stock 3. Remove Jersey 4. Quit")   # Menu for the user
+    print("1. Add Jersey 2. View Stock 3. Remove Jersey 4. Mark as Sold 5. Quit")   # Menu for the user
     choice = input("Choose: ")
     
     if choice == "1":
@@ -68,6 +106,8 @@ while True:
     elif choice == "3":
         remove_jersey()
     elif choice == "4":
+        mark_sold()
+    elif choice == "5":
         break  # To quit the programme
     else:
         print("Invalid choice")  # Catches invalid inputs
