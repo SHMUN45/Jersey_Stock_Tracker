@@ -28,7 +28,10 @@ def view_stock():
         
     else:
         for j in stock:
-            print(f"{j['team']} | {j['season']} | {j['size']} | {j['cost']:.2f}  | {j['listed_price']:.2f}") # Uses f string to print out the stock to user, using 2 decimal points for price and cost
+            if j['sold_price'] is None:
+                print(f"{j['team']} | {j['season']} | {j['size']} | Cost: {j['cost']:.2f}   | Listed:  {j['listed_price']:.2f} | UNSOLD")  # Uses f string to print out the stock to user, using 2 decimal points for price and cost, listed price, and unsold/sold status
+            else:
+                print(f"{j['team']} | {j['season']} | {j['size']} | Cost: {j['cost']:.2f}   | Sold:  {j['sold_price']:.2f} | Profit: {j['sold_price'] - j['cost']:.2f}")
     
 def remove_jersey():
     if stock == []:
