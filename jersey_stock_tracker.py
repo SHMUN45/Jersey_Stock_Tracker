@@ -89,14 +89,29 @@ def mark_sold():
             else:
                 print("Invalid number.")
             
-                    
-                    
-                
+def summary():
+    sold_count = 0
+    unsold_count = 0
+    total_profit = 0
+    tied_up = 0
+    if stock == []:
+        print("Cannot proceed as stock is empty.")
+    else:
+        for j in stock:
+            if j['sold_price'] is not None:
+                sold_count += 1
+                total_profit += j['sold_price'] - j['cost']
+            else:
+                unsold_count += 1
+                tied_up += j['cost']
+           
+        print(f"Sold: {sold_count} | Total Profit: €{total_profit:.2f}")
+        print(f"Unsold: {unsold_count} | Money tied up: €{tied_up:.2f}")        
             
 stock = load_stock()
 
 while True:
-    print("1. Add Jersey 2. View Stock 3. Remove Jersey 4. Mark as Sold 5. Quit")   # Menu for the user
+    print("1. Add Jersey 2. View Stock 3. Remove Jersey 4. Mark as Sold 5. Summary 6. Quit")   # Menu for the user
     choice = input("Choose: ")
     
     if choice == "1":
@@ -108,6 +123,8 @@ while True:
     elif choice == "4":
         mark_sold()
     elif choice == "5":
+        summary()
+    elif choice == "6":
         break  # To quit the programme
     else:
         print("Invalid choice")  # Catches invalid inputs
