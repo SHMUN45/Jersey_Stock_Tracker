@@ -15,9 +15,33 @@ def load_stock():
 def add_jersey():
     team = input("Enter team: ")
     season = input("Enter season: ")
-    size = input("Enter size: ")
-    cost = float(input("Enter purchase cost: "))
-    listed_price = float(input("Enter listed price: "))
+    
+    sizes = ["XS", "S", "M", "L", "XL", "XXL"]    # Store valid sizes
+    while True:
+        size = input("Enter size:").upper()
+        if size in sizes:    # Use in tool to check if the entered size is a valid size from our options
+            break			# Valid, so leaves loop and carrys on
+        print("Invalid size. Choose from XS, S, M, L, XL, XXL")
+    
+    while True:
+        try:
+            cost = float(input("Enter purchase cost: "))
+        except ValueError:
+            print("Please enter a number.")
+        else:
+            if cost >= 0:
+                break
+            print("Cost cannot be negative.")
+    while True:
+        try:
+            listed_price = float(input("Enter listed price: "))
+        except ValueError:
+            print("Please enter a number.")
+        else:
+            if listed_price > 0:
+                break
+            print("Listed price must be greater than zero.")
+            
     jersey = {"team": team, "season": season, "size": size, "cost": cost, "listed_price": listed_price, "sold_price": None}   # Uses a dictionary to store each jersey with its data into the stock list
     stock.append(jersey)
     save_stock()
