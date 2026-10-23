@@ -11,7 +11,24 @@ def load_stock():
             return data
     except FileNotFoundError:
         return []
-    
+
+def get_price(prompt, allow_zero):
+    while True:
+        try:
+            value = float(input(prompt))
+        except ValueError:
+            print("Please enter a number.")
+        else:
+            if allow_zero:
+                if value >= 0:
+                    return value
+                print("Price cannot be negative.")
+            else:
+                if value > 0:
+                    return value
+                print("Price must be greater than zero.")
+            
+ 
 def add_jersey():
     team = input("Enter team: ")
     season = input("Enter season: ")
@@ -20,28 +37,11 @@ def add_jersey():
     while True:
         size = input("Enter size:").upper()
         if size in sizes:    # Use in tool to check if the entered size is a valid size from our options
-            break			# Valid, so leaves loop and carrys on
+            break     # Valid, so leaves loop and carrys on
         print("Invalid size. Choose from XS, S, M, L, XL, XXL")
     
-    while True:
-        try:
-            cost = float(input("Enter purchase cost: "))
-        except ValueError:
-            print("Please enter a number.")
-        else:
-            if cost >= 0:
-                break
-            print("Cost cannot be negative.")
-    while True:
-        try:
-            listed_price = float(input("Enter listed price: "))
-        except ValueError:
-            print("Please enter a number.")
-        else:
-            if listed_price > 0:
-                break
-            print("Listed price must be greater than zero.")
-            
+    cost = get_price("Enter purchase cost: ", True)
+    listed_price = get_price("Enter listed price: ", False)
     jersey = {"team": team, "season": season, "size": size, "cost": cost, "listed_price": listed_price, "sold_price": None}   # Uses a dictionary to store each jersey with its data into the stock list
     stock.append(jersey)
     save_stock()
@@ -49,7 +49,6 @@ def add_jersey():
 def view_stock():
     if stock == []:
         print("Stock is empty")  # If stock is empty
-        
     else:
         for j in stock:
             if j['sold_price'] is None:
@@ -90,7 +89,7 @@ def mark_sold():
             print(f"{num} | {j['team']} | {j['season']} | {j['size']} | {status}")
             
         try:
-            num = int(input("Enter list number. "))
+            num = int(input("Enter list number: "))
         except ValueError:
             print("Please enter a number")
             
@@ -100,15 +99,10 @@ def mark_sold():
                 if marked['sold_price'] is not None:
                     print("Already sold")
                 else:
-                    
-                    try:
-                        sold = float(input("Enter sold price: "))
-                    except ValueError:
-                        print("Please enter a valid price.")
-                    else:
-                        marked['sold_price'] = sold
-                        save_stock()
-                        print(f"Marked {marked['team']} {marked['season']} as sold for €{sold:.2f} ")
+                    sold = get_price("Enter sold price: ", True)
+                    marked['sold_price'] = sold
+                    save_stock()
+                    print(f"Marked {marked['team']} {marked['season']} as sold for €{sold:.2f} ")
                     
             else:
                 print("Invalid number.")
