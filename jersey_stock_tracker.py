@@ -28,7 +28,19 @@ def get_price(prompt, allow_zero):
                     return value
                 print("Price must be greater than zero.")
             
- 
+def get_list_number():
+    while True:
+        try:
+            num = int(input("Enter list number (0 to cancel): "))
+        except ValueError:
+            print("Please enter a number.")
+        else:
+            if num == 0:
+                return None
+            if 1 <= num <= len(stock):
+                return num -1
+            print("List number must be valid")
+
 def add_jersey():
     team = input("Enter team: ")
     season = input("Enter season: ")
@@ -64,18 +76,14 @@ def remove_jersey():
         for num, j in enumerate(stock, start=1):
             print(num, j['team'], j['season'], j['size'])
             
-        try:
-            num = int(input("Enter list number: "))
-        except ValueError:
-            print("Please enter a number. ")
-            
+        index = get_list_number()
+        if index is None:
+            print("Cancelled")
+        
         else:
-            if 1<= num <= len(stock):
-                removed = stock.pop(num - 1)
-                save_stock()
-                print(f"Removed {removed['team']} ")
-            else:
-                print("Invalid number.")
+            removed = stock.pop(index)
+            save_stock()
+            print(f"Removed {removed['team']} ")
 
 def mark_sold():
     if stock == []:
@@ -88,24 +96,19 @@ def mark_sold():
                 status = "SOLD"
             print(f"{num} | {j['team']} | {j['season']} | {j['size']} | {status}")
             
-        try:
-            num = int(input("Enter list number: "))
-        except ValueError:
-            print("Please enter a number")
+        index = get_list_number()
+        if index is None:
+            print("Cancelled.")
             
         else:
-            if 1<= num <= len(stock):
-                marked = stock[num-1]
-                if marked['sold_price'] is not None:
-                    print("Already sold")
-                else:
-                    sold = get_price("Enter sold price: ", True)
-                    marked['sold_price'] = sold
-                    save_stock()
-                    print(f"Marked {marked['team']} {marked['season']} as sold for €{sold:.2f} ")
-                    
+            marked = stock[index]
+            if marked['sold_price'] is not None:
+                print("Already sold")
             else:
-                print("Invalid number.")
+                sold = get_price("Enter sold price: ", True)
+                marked['sold_price'] = sold
+                save_stock()
+                print(f"Marked {marked['team']} {marked['season']} as sold for €{sold:.2f} ")
             
 def summary():
     sold_count = 0
