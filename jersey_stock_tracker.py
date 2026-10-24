@@ -41,10 +41,22 @@ def get_list_number():
                 return num -1
             print("List number must be valid")
 
+def get_season():
+    while True:
+        season = input("Enter season (e.g. 12/13, 94/96, 2022): ")
+        if len(season) == 4 and season.isdigit() and 1900 <= int(season) <= 2100:
+            return season
+        if len(season) == 5 and season[2] == "/" and season[0:2].isdigit() and season[3:5].isdigit():
+            first = int(season[0:2])
+            second = int(season[3:5])
+            if (second - first) % 100 in (1,2):
+                return season
+            
+        print("Invalid season.")  
+
 def add_jersey():
     team = input("Enter team: ")
-    season = input("Enter season: ")
-    
+    season = get_season()
     sizes = ["XS", "S", "M", "L", "XL", "XXL"]    # Store valid sizes
     while True:
         size = input("Enter size:").upper()
